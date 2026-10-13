@@ -1,0 +1,309 @@
+<title>Kratos Space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: technical spec sheet for flight hardware — left-aligned text column beside a live pose-tracking schematic; sections ruled like a datasheet. */
+:root {
+  --bg: #EEF1F4;
+  --surface: #FFFFFF;
+  --ink: #121A26;
+  --muted: #586274;
+  --line: #CBD2DB;
+  --accent: #B5650F;
+  --accent-soft: rgba(181,101,15,.12);
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B1220; --surface: #111A2B; --ink: #E6EBF2; --muted: #93A0B4;
+    --line: #24314A; --accent: #F2A23A; --accent-soft: rgba(242,162,58,.14);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B1220; --surface: #111A2B; --ink: #E6EBF2; --muted: #93A0B4;
+  --line: #24314A; --accent: #F2A23A; --accent-soft: rgba(242,162,58,.14);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.6;
+  padding-inline: 20px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Top bar */
+.bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  padding-block: 20px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.mark { font-family: var(--display); font-weight: 800; font-size: 1.5rem; letter-spacing: .04em; color: var(--ink); text-transform: uppercase; text-decoration: none; }
+.mark span { color: var(--accent); }
+.bar nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.bar nav a { text-decoration: none; }
+.bar nav a:hover { color: var(--ink); }
+
+/* Hero */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 48px; align-items: center; padding-block: 64px 56px;
+}
+.eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 18px; }
+h1 {
+  font-family: var(--display); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(3rem, 8vw, 6rem); line-height: .9; letter-spacing: .005em;
+  margin: 0 0 24px; text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--accent); }
+.lede { font-size: 1.2rem; max-width: 34ch; color: var(--ink); margin: 0 0 28px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  font-family: var(--mono); font-size: .85rem; letter-spacing: .04em; text-decoration: none;
+  padding: 12px 18px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
+}
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+
+.schematic { position: relative; background: var(--surface); border: 1px solid var(--line); }
+.schematic svg { display: block; width: 100%; height: auto; }
+.schematic .cap {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  border-top: 1px solid var(--line); padding: 10px 14px;
+  font-family: var(--mono); font-size: .72rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase;
+}
+.svg-ink { stroke: var(--ink); }
+.svg-muted { stroke: var(--muted); }
+.svg-line { stroke: var(--line); }
+.svg-acc { stroke: var(--accent); }
+.fill-acc { fill: var(--accent); }
+.fill-surface { fill: var(--surface); }
+.fill-bg { fill: var(--bg); }
+.svg-text { fill: var(--muted); font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+.svg-text.hot { fill: var(--accent); }
+.drift { animation: drift 9s ease-in-out infinite; transform-origin: 200px 200px; }
+.kp { animation: pulse 2.4s ease-in-out infinite; }
+@keyframes drift { 0%,100% { transform: translate(0,0) rotate(-1.5deg); } 50% { transform: translate(0,-6px) rotate(1.5deg); } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+
+/* Sections */
+section { border-top: 1px solid var(--line); padding-block: 56px; }
+.sec { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; }
+.sec-label { font-family: var(--mono); font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-top: 6px; }
+h2 {
+  font-family: var(--display); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(1.9rem, 4vw, 2.8rem); line-height: 1; margin: 0 0 20px; text-wrap: balance;
+}
+p { margin: 0 0 16px; max-width: 65ch; }
+.muted { color: var(--muted); }
+
+.figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 28px; border: 1px solid var(--line); }
+.fig { padding: 20px; border-right: 1px solid var(--line); min-width: 0; }
+.fig:last-child { border-right: 0; }
+.fig b { display: block; font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: 1; color: var(--accent); font-variant-numeric: tabular-nums; }
+.fig span { display: block; margin-top: 10px; font-size: .95rem; color: var(--muted); }
+
+.loop { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); counter-reset: step; }
+.loop li { padding: 20px; border-right: 1px solid var(--line); min-width: 0; counter-increment: step; position: relative; }
+.loop li:last-child { border-right: 0; }
+.loop li::before { content: counter(step, decimal-leading-zero); display: block; font-family: var(--mono); font-size: .78rem; color: var(--accent); margin-bottom: 12px; }
+.loop h3 { font-family: var(--body); font-weight: 600; font-size: 1.05rem; margin: 0 0 6px; }
+.loop p { font-size: .95rem; color: var(--muted); margin: 0; }
+.loop-note { font-family: var(--mono); font-size: .78rem; color: var(--muted); margin-top: 12px; }
+
+.status { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.chip { font-family: var(--mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; padding: 5px 10px; border: 1px solid var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.contact { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.addr { font-family: var(--mono); font-size: 1.05rem; padding: 10px 14px; border: 1px solid var(--line); background: var(--surface); user-select: all; }
+.copy { font-family: var(--mono); font-size: .8rem; padding: 10px 14px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.copy:hover { background: var(--ink); color: var(--bg); }
+
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: .75rem; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 40px; gap: 32px; }
+  .sec { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .loop { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .loop li:nth-child(2) { border-right: 0; }
+  .loop li:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .bar nav { display: none; }
+  .figures, .loop { grid-template-columns: minmax(0, 1fr); }
+  .fig, .loop li { border-right: 0 !important; border-bottom: 1px solid var(--line); }
+  .fig:last-child, .loop li:last-child { border-bottom: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .drift, .kp { animation: none; } }
+</style>
+
+<div class="wrap">
+  <header class="bar">
+    <a class="mark" href="#top">Kratos<span>/</span>Space</a>
+    <nav aria-label="Sections">
+      <a href="#problem">Problem</a>
+      <a href="#how">How it works</a>
+      <a href="#status">Status</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Resistance training for microgravity</p>
+        <h1>Strength<br>without<br><em>gravity.</em></h1>
+        <p class="lede">A compact pulley machine that gives astronauts real resistance, with a camera that watches every rep and corrects form as they train.</p>
+        <div class="cta">
+          <a class="btn" href="#how">How it works</a>
+          <a class="btn ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <figure class="schematic" style="margin:0">
+        <svg viewBox="0 0 400 360" role="img" aria-label="Schematic of a floating person doing a cable row, with pose-tracking points on the joints and the cable running over a pulley to a resistance unit.">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0H0V20" fill="none" class="svg-line" stroke-width=".6"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="360" fill="url(#grid)" opacity=".7"/>
+
+          <!-- resistance unit + pulley (fixed to the wall) -->
+          <line x1="372" y1="40" x2="372" y2="320" class="svg-muted" stroke-width="2"/>
+          <circle cx="340" cy="150" r="17" class="fill-surface svg-ink" stroke-width="2"/>
+          <circle cx="340" cy="150" r="3" class="fill-acc"/>
+          <line x1="357" y1="150" x2="372" y2="150" class="svg-muted" stroke-width="2"/>
+          <rect x="318" y="250" width="44" height="54" class="fill-surface svg-ink" stroke-width="2"/>
+          <line x1="324" y1="266" x2="356" y2="266" class="svg-muted" stroke-width="1"/>
+          <line x1="324" y1="276" x2="356" y2="276" class="svg-muted" stroke-width="1"/>
+          <line x1="324" y1="286" x2="356" y2="286" class="svg-muted" stroke-width="1"/>
+          <text x="300" y="322" class="svg-text">RESISTANCE</text>
+          <!-- cable -->
+          <line x1="340" y1="167" x2="340" y2="250" class="svg-acc" stroke-width="2"/>
+
+          <g class="drift">
+            <line x1="252" y1="158" x2="336" y2="134" class="svg-acc" stroke-width="2"/>
+            <!-- body -->
+            <g class="svg-ink" stroke-width="3" stroke-linecap="round" fill="none">
+              <line x1="150" y1="118" x2="160" y2="146"/>
+              <line x1="160" y1="146" x2="208" y2="174"/>
+              <line x1="208" y1="174" x2="252" y2="158"/>
+              <line x1="160" y1="146" x2="146" y2="232"/>
+              <line x1="146" y1="232" x2="204" y2="258"/>
+              <line x1="204" y1="258" x2="260" y2="290"/>
+            </g>
+            <circle cx="146" cy="104" r="15" class="fill-bg svg-ink" stroke-width="3"/>
+            <!-- foot restraint -->
+            <rect x="254" y="292" width="34" height="8" class="fill-surface svg-muted" stroke-width="1.5"/>
+
+            <!-- tracked keypoints -->
+            <g class="kp">
+              <circle cx="160" cy="146" r="5" class="fill-acc"/>
+              <circle cx="208" cy="174" r="5" class="fill-acc"/>
+              <circle cx="252" cy="158" r="5" class="fill-acc"/>
+              <circle cx="146" cy="232" r="5" class="fill-acc"/>
+              <circle cx="204" cy="258" r="5" class="fill-acc"/>
+              <circle cx="260" cy="290" r="5" class="fill-acc"/>
+            </g>
+            <!-- elbow angle -->
+            <path d="M190 164 A22 22 0 0 0 228 167" fill="none" class="svg-acc" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <text x="196" y="204" class="svg-text hot">ELBOW 94°</text>
+            <text x="86" y="244" class="svg-text">HIP 101°</text>
+          </g>
+
+          <!-- readout -->
+          <g>
+            <rect x="16" y="16" width="132" height="62" class="fill-surface svg-line" stroke-width="1"/>
+            <text x="26" y="36" class="svg-text">LOAD   40 kg</text>
+            <text x="26" y="52" class="svg-text">REP    07 / 10</text>
+            <text x="26" y="68" class="svg-text hot">FORM   OK</text>
+          </g>
+        </svg>
+        <figcaption class="cap"><span>Concept illustration</span><span>Seated cable row · 6 tracked joints</span></figcaption>
+      </figure>
+    </div>
+
+    <section id="problem">
+      <div class="sec">
+        <div class="sec-label">The problem</div>
+        <div>
+          <h2>In orbit, the body stops working against anything.</h2>
+          <p>On Earth, every step and every time you stand up loads your bones and muscles. In microgravity that load disappears, and the body starts taking apart what it no longer needs. Without countermeasures, astronauts lose bone density and muscle mass week after week.</p>
+          <p>Resistance exercise is the main countermeasure, so crews train for hours every day. Current equipment is large and heavy, and nobody is standing next to the astronaut checking that the movement is right.</p>
+          <div class="figures">
+            <div class="fig"><b>1–1.5%</b><span>bone mineral density lost per month in weight-bearing bones without exercise</span></div>
+            <div class="fig"><b>~2 h</b><span>of exercise per day on the crew schedule aboard the ISS</span></div>
+            <div class="fig"><b>0</b><span>coaches on board to check form during a session</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="sec">
+        <div class="sec-label">How it works</div>
+        <div>
+          <h2>Pulleys for load. Vision for form.</h2>
+          <p>Weights are useless when nothing has weight. Kratos replaces them with a pulley system connected to a resistance unit, so the astronaut pulls against a controlled force instead of a mass. A camera tracks the body's joints during every rep and feeds that back into the training.</p>
+          <ol class="loop">
+            <li><h3>Load</h3><p>The resistance unit sets the force on the cable through the pulley.</p></li>
+            <li><h3>Move</h3><p>The astronaut performs the exercise, anchored by a foot restraint.</p></li>
+            <li><h3>Track</h3><p>Computer vision estimates joint positions and angles in real time.</p></li>
+            <li><h3>Adjust</h3><p>The system flags bad form and adapts the load for the next rep.</p></li>
+          </ol>
+          <p class="loop-note">The loop repeats every rep.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="status">
+      <div class="sec">
+        <div class="sec-label">Status</div>
+        <div>
+          <div class="status"><span class="chip">Concept stage</span><span class="muted">Zürich, Switzerland</span></div>
+          <h2>A small team, early on.</h2>
+          <p>Kratos Space is a project by a group of friends in Zürich. We are working out the mechanical design of the pulley system and the vision pipeline for tracking movement in a confined space.</p>
+          <p>If you work on human spaceflight, exercise physiology, or pose estimation and want to give feedback, we would like to hear from you.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="sec">
+        <div class="sec-label">Contact</div>
+        <div>
+          <h2>Talk to us.</h2>
+          <div class="contact">
+            <span class="addr" id="email">hello@kratos-space.ch</span>
+            <button class="copy" id="copy-btn" type="button">Copy address</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Kratos Space</span>
+    <span>kratos-space.ch</span>
+  </footer>
+</div>
+
+<script>
+document.getElementById('copy-btn').addEventListener('click', function () {
+  var btn = this, text = document.getElementById('email').textContent;
+  function done(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = 'Copy address'; }, 1800); }
+  try {
+    navigator.clipboard.writeText(text).then(function () { done('Copied'); }, function () { selectIt(); });
+  } catch (e) { selectIt(); }
+  function selectIt() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById('email'));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done('Press Ctrl+C');
+  }
+});
+</script>
